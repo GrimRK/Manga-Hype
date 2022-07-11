@@ -1,0 +1,44 @@
+.row
+{
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    position: relative;
+}
+.row>h2{
+    padding: 30px 3%;
+    border-bottom: 0.1px solid rgb(76, 76, 76);
+}
+.row_item_container
+{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    overflow-x: scroll;
+    scroll-behavior: smooth;
+}
+.row_item_container::-webkit-scrollbar
+{
+display: none;
+}
+.row_scroll_right,.row_scroll_left
+{
+    position: absolute;
+    display: grid;
+    place-items: center;
+    z-index: 5;
+    height: 70%;
+    width: 80px;
+    background-color: rgba(9, 9, 9, 0.8);
+    opacity: 0;
+    bottom: 18px;
+}
+.row_scroll_right
+{
+    right: 0;
+}
+.row_scroll_right:hover,.row_scroll_left:hover
+{
+    transition: 200ms ;
+    opacity: 1;
+}

@@ -1,0 +1,23 @@
+.latest_updates
+{
+    position: relative;
+    padding: 20px;
+    margin-bottom: 30px;
+}
+.latest_updates>h2
+{
+    padding: 30px 20px;
+    border-bottom: 0.1px solid rgb(76, 76, 76);
+}
+.latest_left,.latest_right,.latest_middle{
+    margin: 5px;
+    margin-top: 16px;
+    
+    border-radius: 7px;
+    background: linear-gradient(rgb(43, 43, 43),rgb(63, 63, 63)); 
+}
+.latest_update_manga_container
+{
+    display: flex;
+    justify-content: space-around;
+}

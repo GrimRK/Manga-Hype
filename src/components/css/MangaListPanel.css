@@ -1,0 +1,151 @@
+.filtered_manga_panel
+{
+    display: flex;
+    position: relative;
+    margin: 10px;
+    padding: 15px;
+    border-radius:6px ;
+}
+.filtered_manga_panel:hover
+{
+    transition: 400ms;
+    background-color: #414141;
+
+}
+.filtered_manga_panel:hover>.filtered_manga_info>.filtered_manga_tags>.filtered_tag
+{
+    transition: 400ms;
+    background-color: #212121;
+}
+.filtered_manga_panel_image_container
+{
+    min-width: 120px;
+    min-height: 150px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    
+}
+.filtered_manga_panel_image
+{
+    width: 120px !important;
+    height: 150px !important;
+    border-radius: 10px;
+}
+.filtered_manga_info
+{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    
+    width: 100%;
+    height: 200px;
+    margin-left: 8px;
+}
+.filtered_manga_top
+{
+    width: 100%;
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+.filtered_manga_top>h3
+{
+    width: 80%;
+    max-width: 300px;
+    display: -webkit-box;
+    word-wrap: break-word ;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis !important;
+}
+.filtered_manga_info_description
+{
+    width: 100%;
+    overflow: hidden;
+    color: #cfcfcf;
+    text-overflow: ellipsis !important;
+}
+.filtered_manga_panel_statistic
+{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 200px;
+}
+.filtered_ratings,.filtered_follows
+{
+    margin-left: 10px;
+    cursor: default;
+    font-size: 17px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.filtered_ratings
+{
+    color: rgb(140, 50, 250);
+}
+.filtered_manga_tags
+{
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+}
+.filtered_tag
+{
+    padding: 2px 5px;
+    margin: 3px !important;
+    background-color: #414141;
+    margin: 0px 8px;
+    border-radius: 10px;
+}
+
+@media (max-width:500px)
+{
+    .filtered_manga_top>h3
+    {
+        font-size: 18px !important;
+    }
+    .filtered_manga_info_description
+    {
+        font-size: 12px;
+    }
+    .filtered_tag
+    {
+        font-size: 12px;
+    }
+}
+@media (max-width:370px) {
+    .filtered_manga_panel_image_container
+    {
+        min-width: 40px;
+        min-height: 60px;
+    }
+    .filtered_manga_panel_image
+    {
+        max-width: 80px !important;
+        max-height: 100px !important;
+        object-fit: contain;
+    }
+    .filtered_manga_info
+    {
+        height: 160px;
+        margin-left: 15px;
+    }
+    .filtered_manga_top>h3
+    {
+        font-size: 14px !important;
+    }
+    .filtered_manga_info_description
+    {
+        font-size: 9px;
+    }
+    .filtered_tag
+    {
+        font-size: 9px;
+    }
+}

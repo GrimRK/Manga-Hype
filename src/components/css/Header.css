@@ -1,0 +1,74 @@
+.header
+{
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding:10px 0px ;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    border-bottom: 1px solid rgb(175, 175, 175);
+    background: linear-gradient(rgb(31, 31, 31),rgb(41, 41, 41)); 
+    z-index: 6;
+
+    
+}
+.header_options
+{
+    margin: 10px 35px;
+    
+}
+.header_right
+{
+    display: flex;
+    width: 40%;
+
+}
+.header_search_bar
+{
+    display: flex;
+    align-items: center;
+    
+    border-radius: 20px;
+    padding: 5px 10px;
+    margin: 0px 10px;
+    background-color: rgb(67, 67, 67);
+    color: white;
+    width: 100%;
+    position: relative;
+}
+.header_form
+{
+    width: 100%;
+}
+.header_input
+{
+    color: white !important;
+    border: 0px !important;
+    margin: 0px 5px;
+    width: 100%;
+}
+.avatar_options
+{
+    width: 100%;
+    min-width: fit-content;
+}
+.avatar_options >li{
+    width: 100% !important;
+}
+.header_logo
+{
+    height: 55px;
+    object-fit: contain;
+}
+.MuiPaper-root
+{
+    background-color: rgb(41, 41, 41)!important;
+    color: white!important;
+}
+@media (max-width:700px)
+{
+    .header_right{
+        width: fit-content;
+    }
+}

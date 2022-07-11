@@ -1,0 +1,43 @@
+.manga_panel{
+    display: flex;
+    position: relative;
+    margin: 10px 10px 20px 10px;
+    align-items: center;
+    border-radius: 5px;
+    cursor: pointer !important;
+    max-width: 400px;
+    width: 100%;
+    height: 100px;
+}
+.manga_panel:hover
+{
+    transition: 300ms ease-in;
+    background-color: rgb(75, 75, 75); 
+}
+.manga_panel_img{
+    border-radius: 5px;
+    margin: 5px;
+    margin-left: 10px;
+    height: 80px;
+    width: 54px;
+    object-fit: contain;
+}
+.manga_panel_info{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 10px;
+}
+.manga_panel_info>h3{
+    font-size: 12px !important;
+    padding: 10px 0px;
+    word-wrap: break-word;
+    max-width: 60vw;
+}
+.manga_panel_info>p{
+    font-size: 10px;
+}
+.manga_panel_latest
+{
+    padding: 5px 0px 10px 0px;
+}

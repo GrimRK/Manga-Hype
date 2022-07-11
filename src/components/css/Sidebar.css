@@ -1,0 +1,65 @@
+.sidebar
+{
+    position: relative;
+    max-width: 300px;
+    width: 100vw; 
+}
+.option_icon
+{
+    color: white !important;
+}
+.sidebar_divider
+{
+    margin-left: auto !important;
+    margin-right: auto !important;
+    width: 90%;
+    background-color: rgb(87, 87, 87) !important;
+}
+.sidebar_header
+{
+    display: flex;
+    justify-content: space-around;
+    padding: 15px 0px;
+    height: 60px;
+    align-items: center;
+}
+.sidebar_logo
+{
+    height: 60px;
+    object-fit: contain;
+}
+.sidebar_search_bar
+{
+    display: flex;
+    align-items: center;
+}
+.sidebar_form
+{
+    
+    width: 100%;
+}
+.sidebar_input
+{
+    color: white !important;
+}
+
+
+.Mui-selected
+{
+    background: linear-gradient(90deg,rgba(168, 0, 252, 0.5),rgba(255, 0, 221, 0.6),rgba(80, 16, 113, 0.4)) !important;
+    border-radius: 50px;
+}
+.MuiListItemButton-root
+{
+    border-radius: 6px !important;
+    padding: 7px !important;
+    
+}
+.MuiListItemButton-root:hover
+{
+    background:linear-gradient(90deg,rgba(89, 89, 89, 0.605),rgba(99, 99, 99, 0.468));
+}
+.MuiDrawer-paper{
+    color: white !important;
+    background: linear-gradient(rgb(18, 18, 18),rgb(41, 41, 41));
+}
