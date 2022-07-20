@@ -1,5 +1,4 @@
 import {
-  Button,
   Collapse,
   FormControl,
   Input,
@@ -9,7 +8,7 @@ import {
   Select,
   Stack,
 } from "@mui/material";
-import axios from "axios";
+import axios from "../axios";
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import { useStateProviderValue } from "../StateProvider";
@@ -22,16 +21,12 @@ function MangaList() {
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState("");
   const [currentTag, setCurrentTag] = useState("");
-  const [currentNotTag, setCurrentNotTag] = useState("");
   const [selectedTags, setSelectedTags] = useState(new Array());
-  const [deselectedTags, setDeselectedTags] = useState(new Array());
-  const [orderBy, setOrderBy] = useState("latestUploadedChapter");
+  const [orderBy, setOrderBy] = useState("updatedAt");
   const [orderMode, setOrderMode] = useState("desc");
   const [mangaList, setMangaList] = useState();
   const [filterString, setFilterString] = useState("");
-  const [listUrl, setListUrl] = useState(
-    "https://api.mangadex.org/manga?order%5BlatestUploadedChapter%5D=desc&limit=20"
-  );
+  const [listUrl, setListUrl] = useState("");
   const [page, setPage] = useState(1);
   const [maxPage, setMaxPage] = useState(1);
   const targetRef = useRef(null);
@@ -39,14 +34,21 @@ function MangaList() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    dispatch({
+      type: "SET_CURRENTCOMPONENT",
+      currentComponent: "mangalist",
+    });
+  }, []);
+  useEffect(() => {
     if (window.location.search) {
       // console.log("keypair", window.location.search.split("?")[1]);
       if (window.location.search.split("?")[1]) {
         setFilterString(window.location.search.split("?")[1]);
-        if (window.location.search.split("?")[1].split("offset=")[1]) {
+        if (window.location.search.split("?")[1].split("page[offset]=")[1]) {
           setPage(
             parseInt(
-              window.location.search.split("?")[1].split("offset=")[1] / 20
+              window.location.search.split("?")[1].split("page[offset]=")[1] /
+                20
             ) + 1
           );
         }
@@ -55,7 +57,7 @@ function MangaList() {
   }, [window.location.search]);
 
   useEffect(() => {
-    setListUrl(`https://api.mangadex.org/manga?${filterString}`);
+    setListUrl(`https://kitsu.io/api/edge/manga?${filterString}`);
   }, [filterString]);
 
   useEffect(() => {
@@ -71,9 +73,9 @@ function MangaList() {
           setMangaList(res.data.data);
           setMaxPage(
             parseInt(
-              res.data.total % 20 === 0
-                ? res.data.total / 20
-                : res.data.total / 20 + 1
+              res.data.meta.count % 20 === 0
+                ? res.data.meta.count / 20
+                : res.data.meta.count / 20 + 1
             )
           );
         })
@@ -83,13 +85,13 @@ function MangaList() {
 
   const handleChange = (event, value) => {
     var temp = filterString;
-    if (temp.split("offset")[1]) {
-      var arr = temp.split("offset");
+    if (temp.split("page[offset]")[1]) {
+      var arr = temp.split("page[offset]");
       arr[1] = `=${(value - 1) * 20}`;
-      temp = arr.join("offset");
+      temp = arr.join("page[offset]");
       // console.log(temp, arr);
     } else {
-      temp += `&offset=${(value - 1) * 20}`;
+      temp += `&page[offset]=${(value - 1) * 20}`;
     }
     navigate(`/mangalist?${temp}`);
     setPage(value);
@@ -99,30 +101,12 @@ function MangaList() {
     var temp = selectedTags;
     setSelectedTags(temp.filter((ele) => ele.id !== tag.id));
   };
-  const handleRemoveNotTag = (tag) => {
-    var temp = deselectedTags;
-    setDeselectedTags(temp.filter((ele) => ele.id !== tag.id));
-  };
-
   const handleTags = (event) => {
     var temp = selectedTags;
     if (temp.find((item) => item.id === event.target.value.id)) return;
-    if (deselectedTags?.find((item) => item.id === event.target.value.id)) {
-      handleRemoveNotTag(event.target.value);
-    }
     temp.push(event.target.value);
     setCurrentTag(event.target.value);
     setSelectedTags(temp);
-  };
-  const handleNotTags = (event) => {
-    var temp = deselectedTags;
-    if (temp.find((item) => item.id === event.target.value.id)) return;
-    if (selectedTags?.find((item) => item.id === event.target.value.id)) {
-      handleRemoveTag(event.target.value);
-    }
-    temp.push(event.target.value);
-    setCurrentNotTag(event.target.value);
-    setDeselectedTags(temp);
   };
 
   const handleSearch = () => {
@@ -130,17 +114,23 @@ function MangaList() {
       type: "SET_CURRENTCOMPONENT",
       currentComponent: "mangalist",
     });
-    var includeTags = "";
+    var includeTags = "&filter[categories]=";
     selectedTags.forEach((tag) => {
-      includeTags += "&includedTags%5B%5D=" + tag.id;
+      includeTags += tag.attributes.slug + ",";
     });
-    var excludeTags = "";
-    deselectedTags.forEach((tag) => {
-      excludeTags += "&excludedTags%5B%5D=" + tag.id;
-    });
-    const url = `${
-      title ? "title=" + title : ""
-    }${includeTags}&includedTagsMode=AND${excludeTags}&excludedTagsMode=OR&order%5B${orderBy}%5D=${orderMode}&limit=20`;
+    var order = "sort=";
+    if (orderMode == "desc") {
+      order += "-";
+    }
+    order += orderBy;
+    const url = `page[limit]=20&filter[text]=${title}${includeTags}&${order}`;
+
+    setCurrentTag("");
+    setSelectedTags(new Array());
+    setTitle("");
+    setOrderBy("updatedAt");
+    setOrderMode("desc");
+
     navigate(`/mangalist?${url}`);
   };
   return (
@@ -187,26 +177,7 @@ function MangaList() {
                   {tags?.map((tag) => {
                     return (
                       <MenuItem key={tag?.id} value={tag}>
-                        {tag?.attributes?.name?.en}
-                      </MenuItem>
-                    );
-                  })}
-                </Select>
-              </FormControl>
-              <FormControl fullWidth>
-                <InputLabel className="filtered_label">Exclude Tags</InputLabel>
-                <Select
-                  className="filter_input"
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={currentNotTag}
-                  label="Tags"
-                  onChange={handleNotTags}
-                >
-                  {tags?.map((tag) => {
-                    return (
-                      <MenuItem key={tag?.id} value={tag}>
-                        {tag?.attributes?.name?.en}
+                        {tag?.attributes?.title}
                       </MenuItem>
                     );
                   })}
@@ -214,22 +185,13 @@ function MangaList() {
               </FormControl>
             </div>
           </div>
-          {selectedTags || deselectedTags ? (
+          {selectedTags ? (
             <div className="show_tags">
               <div className="show_selected_tags">
                 {selectedTags?.map((tag) => {
                   return (
                     <p key={tag?.id} onClick={() => handleRemoveTag(tag)}>
-                      {tag?.attributes?.name?.en}
-                    </p>
-                  );
-                })}
-              </div>
-              <div className="show_deselected_tags">
-                {deselectedTags?.map((tag) => {
-                  return (
-                    <p key={tag?.id} onClick={() => handleRemoveNotTag(tag)}>
-                      {tag?.attributes?.name?.en}
+                      {tag?.attributes?.title}
                     </p>
                   );
                 })}
@@ -249,11 +211,8 @@ function MangaList() {
                 label="OrderBy"
                 onChange={(e) => setOrderBy(e.target.value)}
               >
-                <MenuItem value={"latestUploadedChapter"}>
-                  Latest Uploads
-                </MenuItem>
-                <MenuItem value={"rating"}>Rating</MenuItem>
-                <MenuItem value={"relevance"}>Relevance</MenuItem>
+                <MenuItem value={"updatedAt"}>Latest Uploads</MenuItem>
+                <MenuItem value={"averageRating"}>Rating</MenuItem>
               </Select>
 
               <Select
@@ -281,7 +240,6 @@ function MangaList() {
       </div>
 
       <div className="filtered_page_container">
-        {/* {console.log("page: ", page)} */}
         <Stack className="filtered_page_stack" spacing={1}>
           <Pagination
             className="filtered_page_number"

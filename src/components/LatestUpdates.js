@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import MangaPanel from "./MangaPanel";
 import "./css/LatestUpdates.css";
-import axios from "axios";
+import axios from "../axios";
 import { useWindowSize } from "usehooks-ts";
 
 function LatestUpdates() {
@@ -36,7 +36,7 @@ function LatestUpdates() {
       // console.log(string);
       // 2022-04-29T17%3A21%3A44
       const res = await axios.get(
-        `https://api.mangadex.org/manga?limit=15&updatedAtSince=${string}&order%5BlatestUploadedChapter%5D=desc&availableTranslatedLanguage%5B%5D=en`
+        `https://kitsu.io/api/edge/manga?page[limit]=15&sort=updatedAt`
       );
       // console.log("Yesterday : ", res?.data?.data);
       setMangas(res?.data?.data);

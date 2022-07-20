@@ -8,6 +8,7 @@
 .row>h2{
     padding: 30px 3%;
     border-bottom: 0.1px solid rgb(76, 76, 76);
+    cursor: default;
 }
 .row_item_container
 {
@@ -23,6 +24,7 @@ display: none;
 }
 .row_scroll_right,.row_scroll_left
 {
+    cursor: pointer;
     position: absolute;
     display: grid;
     place-items: center;

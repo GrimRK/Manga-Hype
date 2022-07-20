@@ -9,6 +9,12 @@
     cursor: pointer;
     width: 150px;
     height: 330px;
+    transition: 300ms;
+}
+.row_manga_panel:hover
+{
+    
+    transform: scale(1.05);
 }
 .row_manga_panel_img
 {

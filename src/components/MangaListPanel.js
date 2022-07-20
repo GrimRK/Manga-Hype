@@ -1,32 +1,23 @@
-import axios from "axios";
+import axios from "../axios";
 import React, { useEffect, useState } from "react";
 import StarBorderPurple500OutlinedIcon from "@mui/icons-material/StarBorderPurple500Outlined";
 import BookmarkAddOutlinedIcon from "@mui/icons-material/BookmarkAddOutlined";
 import { Link } from "react-router-dom";
 import "./css/MangaListPanel.css";
 function MangaListPanel({ manga }) {
-  const [cover, setCover] = useState(null);
-  const [statistics, setStatistics] = useState(null);
+  const [tags, setTags] = useState(null);
   useEffect(() => {
     if (manga) {
-      const coverInfo = manga?.relationships?.find(
-        (ele) => ele.type === "cover_art"
-      );
-      axios
-        .get(`https://api.mangadex.org/cover/${coverInfo?.id}`)
-        .then((res) => {
-          setCover(res.data.data);
-        })
-        .catch((err) => console.log(err.message));
-
-      async function fetchStatistics() {
+      async function fetchTags() {
         const res = await axios
-          .get(`https://api.mangadex.org/statistics/manga/${manga?.id}`)
+          .get(
+            `https://kitsu.io/api/edge/manga/${manga?.id}/categories?page[limit]=3`
+          )
           .catch((err) => console.log(err.message));
 
-        setStatistics(res.data.statistics[manga?.id]);
+        setTags(res?.data?.data);
       }
-      fetchStatistics();
+      fetchTags();
     }
   }, []);
   const truncate = (str, len) => {
@@ -40,11 +31,7 @@ function MangaListPanel({ manga }) {
         <div className="filtered_manga_panel_image_container">
           <img
             className="filtered_manga_panel_image"
-            src={
-              cover
-                ? `https://uploads.mangadex.org/covers/${manga?.id}/${cover?.attributes.fileName}`
-                : ""
-            }
+            src={manga?.attributes?.posterImage?.original}
             alt=""
           ></img>
         </div>
@@ -52,31 +39,37 @@ function MangaListPanel({ manga }) {
         <div className="filtered_manga_info">
           <div className="filtered_manga_top">
             <h3>
-              {manga?.attributes?.title?.en || manga?.attributes?.title?.ja}
+              {manga?.attributes?.canonicalTitle ||
+                manga?.attributes?.titles?.en ||
+                manga?.attributes?.titles?.en_jp ||
+                manga?.attributes?.titles?.en_us ||
+                manga?.attributes?.titles?.en_uk ||
+                manga?.attributes?.titles?.ja_jp ||
+                manga?.attributes?.titles?.ja}
             </h3>
             <div className="filtered_manga_panel_statistic">
               <div className="filtered_ratings">
                 <StarBorderPurple500OutlinedIcon />
-                <p>{statistics?.rating?.average}</p>
+                <p>{manga?.attributes?.averageRating}</p>
               </div>
               <div className="filtered_follows">
                 <BookmarkAddOutlinedIcon />
-                <p>{statistics?.follows}</p>
+                <p>{manga?.attributes?.favoritesCount}</p>
               </div>
             </div>
           </div>
           <div className="filtered_manga_tags">
-            {manga?.attributes?.tags?.map((tag, i) => {
+            {tags?.map((tag, i) => {
               if (i > 3) return;
               return (
                 <p key={i} className={`filtered_tag`}>
-                  {tag?.attributes?.name?.en}
+                  {tag?.attributes?.title}
                 </p>
               );
             })}
           </div>
           <p className="filtered_manga_info_description">
-            {truncate(manga?.attributes?.description?.en, 200)}
+            {truncate(manga?.attributes?.description, 200)}
           </p>
         </div>
       </div>

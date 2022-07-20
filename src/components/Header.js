@@ -11,34 +11,22 @@ import {
 import MenuOpenOutlinedIcon from "@mui/icons-material/MenuOpenOutlined";
 import { useStateProviderValue } from "../StateProvider";
 import SearchIcon from "@mui/icons-material/Search";
-import axios from "axios";
+import LoginIcon from "@mui/icons-material/Login";
+import LogoutIcon from "@mui/icons-material/Logout";
+import PersonIcon from "@mui/icons-material/Person";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../images/mangahype-logo1.png";
 import avatar from "../images/mangahype-avatar.png";
+import { signOut } from "firebase/auth";
+import { auth } from "../firebase";
 
 function Header() {
-  const [{ open, width, token }, dispatch] = useStateProviderValue();
+  const [{ open, width, token, user }, dispatch] = useStateProviderValue();
   const [searchVal, setSearchVal] = useState("");
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [user, setUser] = useState(null);
+
   const openMenu = Boolean(anchorEl);
   const navigate = useNavigate();
-  useEffect(() => {
-    if (token) {
-      const header = {
-        Authorization: `Bearer ${localStorage.getItem("mhp_access_token")}`,
-      };
-      axios
-        .get("https://api.mangadex.org/user/me", {
-          headers: header,
-        })
-        .then((res) => {
-          console.log("user", res.data);
-          setUser(res.data);
-        });
-    }
-    return;
-  }, [token]);
   const handleOpen = () => {
     dispatch({
       type: "SET_OPEN",
@@ -54,45 +42,21 @@ function Header() {
   };
 
   const handleMe = () => {
-    const header = {
-      Authorization: `Bearer ${localStorage.getItem("mhp_access_token")}`,
-    };
     navigate("/myprofile");
-    // axios
-    //   .get("https://api.mangadex.org/user/me", {
-    //     headers: header,
-    //   })
-    //   .then((res) => console.log("user", res.data));
   };
   const handleLogout = () => {
-    const header = {
-      Authorization: `Bearer ${localStorage.getItem("mhp_access_token")}`,
-    };
-    axios
-      .post("https://api.mangadex.org/auth/logout", {
-        headers: header,
-      })
-      .then((res) => {
-        dispatch({
-          type: "SET_TOKEN",
-          token: null,
-        });
-        localStorage.setItem("mhp_expires", null);
-        localStorage.setItem("mhp_access_token", null);
-        console.log("Logged out");
-        navigate("/");
-      });
+    signOut(auth);
   };
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchVal) {
+      var temp = searchVal;
       dispatch({
         type: "SET_CURRENTCOMPONENT",
         currentComponent: "mangalist",
       });
-      navigate(
-        `/mangalist?title=${searchVal}&order%5BlatestUploadedChapter%5D=desc&limit=20`
-      );
+      setSearchVal("");
+      navigate(`/mangalist?filter[text]=${temp}&page[limit]=20`);
     }
   };
 
@@ -146,14 +110,25 @@ function Header() {
             {token ? (
               <>
                 <MenuItem onClick={handleMe}>
-                  {user ? user.data.attributes.username : ""}
+                  <div className="avatar_option_link">
+                    <PersonIcon className="avatar_option_icon" />
+                    <p>{user ? user.username : ""}</p>
+                  </div>
                 </MenuItem>
-                <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                <MenuItem onClick={handleLogout}>
+                  <div className="avatar_option_link">
+                    <LogoutIcon className="avatar_option_icon" />
+                    <p>Log Out</p>
+                  </div>
+                </MenuItem>
               </>
             ) : (
               <MenuItem>
                 <Link className="router_link" to="/login">
-                  Log In
+                  <div className="avatar_option_link">
+                    <LoginIcon className="avatar_option_icon" />
+                    <p>Log In</p>
+                  </div>
                 </Link>
               </MenuItem>
             )}

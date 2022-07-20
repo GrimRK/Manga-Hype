@@ -5,6 +5,7 @@
     justify-content: center;
     align-items: center;
     position: relative;
+    width: 100%;
 }
 .manga_view_top
 {
@@ -36,12 +37,20 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    
+}
+.manga_view_content_image>img:hover
+{
+    
+    transform: scale(1.06);
 }
 .manga_view_content_image>img{
     /* width: 100%; */
+    max-width:180px;
     max-height: 300px;
     object-fit: contain;
     border-radius: 15px;
+    transition: 300ms;
 }
 
 .manga_view_content_right
@@ -66,11 +75,13 @@
     text-shadow: 2px 2px rgba(1, 1, 1, 0.6);
     font-size: 50px;
     padding-bottom: 30px;
+    cursor: default;
 }
 .manga_view_names>h3{
     font-size: 18px;
     text-shadow: 1px 1px rgba(1, 1, 1, 0.6);
     padding-bottom: 20px;
+    cursor: default;
 }
 .manga_view_names>h4{
     
@@ -110,6 +121,12 @@
     background-color:rgb(93, 0, 206) ;
     color: white ;
     width: 160px ;
+    cursor: pointer;
+    transition: 300ms;
+}
+.manga_view_button:hover
+{
+    background-color:rgb(124, 31, 238) ;
 }
 
 .manga_view_tags
@@ -126,7 +143,13 @@
     margin: 1px 4px;
     padding: 0px 2px;
     border-radius: 3px;
-    cursor: default;
+    cursor: pointer !important;
+    transition: 300ms;
+}
+.tags:hover
+{
+    background-color: white;
+    color: rgb(25, 25, 25);
 }
 .manga_view_status
 {
@@ -148,7 +171,7 @@
     color: rgb(140, 50, 250);
     cursor: default;
 }
-.follows
+.follows,.views
 {
     padding: 0px 10px;
     display: flex;
@@ -207,33 +230,23 @@
 .manga_view_chapter_content>h2
 {
     padding: 10px 0px;
+    cursor: default;
 }
-.manga_view_volume
+.chapter_cell
 {
-    padding-top:10px ;
-}
-.volume_header
-{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-size: large;
-
-}
-.volume_left,.volume_middle
-{
-    flex:0.33;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.chapter_collapse
-{
-    flex:0.33;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     cursor: pointer;
+    background-color: rgb(55, 55, 55);
+    margin-bottom: 4px;
+    border-radius: 4px;
+    padding: 5px;
+}
+.chapter_cell:hover{
+    transition: 400ms!important;
+    background-color: rgb(88, 88, 88);
+}
+.chapter_page_stack
+{
+    align-items: center !important;
 }
 @media(max-width:1280px)
 {

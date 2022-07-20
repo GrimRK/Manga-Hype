@@ -10,6 +10,7 @@
     border-bottom: 0.1px solid rgb(76, 76, 76);
 }
 .latest_left,.latest_right,.latest_middle{
+    position: relative;
     margin: 5px;
     margin-top: 16px;
     
