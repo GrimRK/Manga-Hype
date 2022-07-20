@@ -28,13 +28,17 @@ function Sidebar() {
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchVal) {
+      var temp = searchVal;
       dispatch({
         type: "SET_CURRENTCOMPONENT",
         currentComponent: "mangalist",
       });
-      navigate(
-        `/mangalist?title=${searchVal}&order%5BlatestUploadedChapter%5D=desc&limit=20`
-      );
+      setSearchVal("");
+      dispatch({
+        type: "SET_OPEN",
+        open: false,
+      });
+      navigate(`/mangalist?filter[text]=${temp}&page[limit]=20`);
     }
   };
   const handleClose = () => {
@@ -57,7 +61,7 @@ function Sidebar() {
         >
           <img className="sidebar_logo" src={logo} alt="logo" />{" "}
         </Link>
-        <CloseIcon onClick={handleClose} />
+        <CloseIcon style={{ cursor: "pointer" }} onClick={handleClose} />
       </div>
       <List>
         <Divider className="sidebar_divider" />
@@ -79,10 +83,7 @@ function Sidebar() {
             </ListItemButton>
           </ListItem>
         </Link>
-        <Link
-          className="router_link"
-          to="/mangalist?order%5BlatestUploadedChapter%5D=desc"
-        >
+        <Link className="router_link" to="/mangalist?sort=-updatedAt">
           <ListItem
             onClick={() => {
               dispatch({
@@ -103,7 +104,7 @@ function Sidebar() {
             </ListItemButton>
           </ListItem>
         </Link>
-        <Link className="router_link" to="/mangalist?order%5Brating%5D=desc">
+        <Link className="router_link" to="/mangalist?sort=-averageRating">
           <ListItem
             onClick={() => {
               dispatch({
@@ -171,29 +172,6 @@ function Sidebar() {
                 </ListItemButton>
               </ListItem>
             </Link>
-            <Link className="router_link" to="/follow/manga">
-              <ListItem
-                onClick={() => {
-                  dispatch({
-                    type: "SET_OPEN",
-                    open: false,
-                  });
-                  dispatch({
-                    type: "SET_CURRENTCOMPONENT",
-                    currentComponent: "followed_manga",
-                  });
-                }}
-              >
-                <ListItemButton
-                  selected={currentComponent === "followed_manga"}
-                >
-                  <ListItemIcon className="option_icon">
-                    <BookmarkIcon />
-                  </ListItemIcon>
-                  <ListItemText primary="Followed Manga" />
-                </ListItemButton>
-              </ListItem>
-            </Link>
           </>
         ) : (
           ""
@@ -201,14 +179,14 @@ function Sidebar() {
         <Divider className="sidebar_divider" />
         <ListItem
           onClick={() => {
-            window.location.href = "https://mangadex.org";
+            window.location.href = "https://github.com/hummingbird-me/api-docs";
           }}
         >
           <ListItemButton>
             <ListItemIcon className="option_icon">
               <LinkIcon />
             </ListItemIcon>
-            <ListItemText primary="MangaDex" />
+            <ListItemText primary="Kitsu API" />
           </ListItemButton>
         </ListItem>
       </List>

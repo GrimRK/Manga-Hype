@@ -13,7 +13,7 @@ export const initialState = {
 };
 
 const reducer = (state, action) => {
-  console.log("Action : ", action);
+  // console.log("Action : ", action);
   switch (action.type) {
     case "SET_USER":
       return {
@@ -66,10 +66,10 @@ const reducer = (state, action) => {
         ...state,
         action: action.action,
       };
-    case "SET_MANHWA":
+    case "SET_ROMANCE":
       return {
         ...state,
-        manhwa: action.manhwa,
+        romance: action.romance,
       };
     default:
       return state;
