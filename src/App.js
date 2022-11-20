@@ -6,10 +6,10 @@ import { useStateProviderValue } from "./StateProvider";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "./firebase";
 import { doc, getDoc, onSnapshot } from "firebase/firestore";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, Router } from "react-router-dom";
 
 function App() {
-  const [{}, dispatch] = useStateProviderValue();
+  const [dispatch] = useStateProviderValue();
   useEffect(() => {
     async function fetchPopular() {
       const res = await axios
@@ -17,7 +17,7 @@ function App() {
           `https://kitsu.io/api/edge/manga?page[limit]=20&sort=popularityRank`
         )
         .catch((err) => console.log(err));
-      // console.log("Popular : ", res?.data?.data);
+      console.log("Popular : ", res?.data?.data);
       dispatch({
         type: "SET_POPULAR",
         popular: res?.data?.data,
@@ -110,9 +110,9 @@ function App() {
 
   return (
     <div className="App">
-      <BrowserRouter>
+      <Router>
         <Display />
-      </BrowserRouter>
+      </Router>
     </div>
   );
 }

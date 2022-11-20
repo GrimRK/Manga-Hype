@@ -50,7 +50,7 @@ function LatestUpdates() {
         <div className="latest_left">
           {mangas?.map((manga, i) =>
             i < 5 ? (
-              <MangaPanel key={manga?.id} id={manga?.id} manga={manga} />
+              <MangaPanel data-testid={'latest_manga'} key={manga?.id} id={manga?.id} manga={manga} />
             ) : (
               ""
             )
